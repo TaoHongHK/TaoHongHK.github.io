@@ -7,20 +7,20 @@ baseurl: "/TaoHongHK.github.io" # the subpath of your site, e.g. /blog
 url: "https://github.com/TaoHongHK/TaoHongHK.github.io.git" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author settings
-author: HongTao #add your name
+author: HongTao # add your name
 author-pic: tao-face.jpg
-about-author: My name is HongTao. Welcome to my new Blog.
+about-author: My name is HongTao.Welcome to my new Blog.
 
 # Contact links
-email: HongTao55@163.com# Add your Email address
-phone: 18872251715# Add your Phone number
-website: # Add your website, do not add http://
-linkedin: # Add your Linkedin handle
+email: HongTao55@163.com # Add your Email address
+phone: 18872251715 # Add your Phone number
+# website:  Add your website, do not add http://
+# linkedin:  Add your Linkedin handle
 github: TaoHongHK# Add your Github handle
-twitter: # Add your Twitter handle
-facebook: # Add your Facebook handle
-instagram: # Add your Instagram handle
-pinterest: # Add your Pinterest handle
+# twitter:  Add your Twitter handle
+# facebook:  Add your Facebook handle
+# instagram:  Add your Instagram handle
+# pinterest:  Add your Pinterest handle
 
 # Newsletter
 mailchimp: # Add your MailChimp form identifier.
