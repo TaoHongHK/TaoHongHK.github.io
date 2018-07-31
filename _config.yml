@@ -1,3 +1,47 @@
 title: HongTao's Blog
-description: something i want to show
-theme: jekyll-theme-architect
+email: HONGTAO55@163.com
+description: > # this means to ignore newlines until "baseurl:"
+  Hello world!
+permalink: ':title/'
+baseurl: "/TaoHongHK.github.io" # the subpath of your site, e.g. /blog
+url: "https://github.com/TaoHongHK/TaoHongHK.github.io.git" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Author settings
+author: HongTao# add your name
+author-pic: tao-face.jpg
+about-author: My name is HongTao. I’m a full-time adventure travel blogger and photographer who’s been exploring the world for over 2 years.
+
+# Contact links
+email: HongTao55@163.com# Add your Email address
+phone: 18872251715# Add your Phone number
+website: # Add your website, do not add http://
+linkedin: # Add your Linkedin handle
+github: TaoHongHK# Add your Github handle
+twitter: # Add your Twitter handle
+facebook: # Add your Facebook handle
+instagram: # Add your Instagram handle
+pinterest: # Add your Pinterest handle
+
+# Newsletter
+mailchimp: # Add your MailChimp form identifier.
+
+# Disqus
+discus_identifier: mr-brown # Add your discus identifier
+
+# Tracker
+analytics: # Google Analytics
+
+# Paginate
+paginate: 6
+paginate_path: /page:num/
+
+# Build settings
+markdown: kramdown
+
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
+
+include: [_pages]
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock", "package-lock.json", "assets/css/sass/"]
