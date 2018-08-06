@@ -54,6 +54,8 @@ author: hongtao # Add name author (optional)
 >* 安装完成后，你就可以去[选择jekyll模板了](http://jekyllthemes.org/)
 >* 选择好后，将你所看中的模板下载下来，将文件复制到你的github.io库的本地库文件中（需要提前clone到本地），改变其中的config文件，将所需的配置改为你自己的，就大功告成啦！
 
+---
+
 ### 3.如何去书写自己的博客
 
 由于githu.io支持的是markdown语法书写，所以用github做博客的朋友要花一点时间去学习一下，其实markdown语言是十分简单的，学起来非常快。
