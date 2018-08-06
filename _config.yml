@@ -7,7 +7,7 @@ baseurl: "/TaoHongHK.github.io" # the subpath of your site, e.g. /blog
 url: "https://github.com/TaoHongHK/TaoHongHK.github.io.git" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Author settings
-author: HongTao'Blog  #add your name
+author: HongTao  #add your name
 author-pic: tao-face.jpg
 about-author: My name is HongTao.Welcome to my new Blog.
 
