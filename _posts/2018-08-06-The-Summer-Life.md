@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The Summer Life
-date: 2018-08-06 13:32:20 +0300
+date: 2018-08-06 13:32:20 GMT+8
 description: First Blog. # Add post description (optional)
 img: post-2.jpg # Add image post (optional)
 tags: [Blog, Meditation]
