@@ -1,11 +1,11 @@
 ﻿---
 layout: post
-title: 暑假的学习
-date: 2018-8-6 15:23:20 GMT+8 
-description: what did i do in summer
-img: post-6.jpg # Add image post (optional)
+title: The forest in the fog
+date: 2018-08-6 13:32:20 +0300
+description: You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. # Add post description (optional)
+img: post-2.jpg # Add image post (optional)
 tags: [Blog, Meditation]
-author: hontao # (optional)
+author: hongtao # Add name author (optional)
 ---
 
 # **暑假的学习**
@@ -68,10 +68,9 @@ author: hontao # (optional)
 ##**搞一下Java**
 
 
+
+
+
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]:   https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
-
-
-
-
