@@ -4,13 +4,17 @@ title: The Summer Life
 date: 2018-08-05 13:32:20 +0300
 description: First Blog. # Add post description (optional)
 img: post-2.jpg # Add image post (optional)
-tags: [Blog, Meditation]
+tags: [Blog, Summer life]
 author: hongtao # Add name author (optional)
 ---
 
 # **暑假的学习**
 
 标签 : 学习篇
+
+---
+
+> [TOC]
 
 ---
 
@@ -58,18 +62,37 @@ author: hongtao # Add name author (optional)
 
 由于githu.io支持的是markdown语法书写，所以用github做博客的朋友要花一点时间去学习一下，其实markdown语言是十分简单的，学起来非常快。
 
-什么是markdown:
-:    Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，Markdown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的 HTML 标记语言来说，Markdown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。
+#### 1.什么是markdown:
+> Markdown 是一种轻量级的「标记语言」，它的优点很多，目前也被越来越多的写作爱好者，撰稿者广泛使用。看到这里请不要被「标记」、「语言」所迷惑，Markdown 的语法十分简单。常用的标记符号也不超过十个，这种相对于更为复杂的 HTML 标记语言来说，Markdown 可谓是十分轻量的，学习成本也不需要太多，且一旦熟悉这种语法规则，会有一劳永逸的效果。
 
-如何使用markdown:
-:    看看就会了[markdown手册](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown)
+#### 2.如何使用markdown:
+> 看一下这个吧[markdown手册](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown)，很快就能学会
 
+#### 3.怎样去写博客
+> * 找到你本地库的文件夹，打开_post文件夹，找到其中模板中存在的一片博客，对它重命名，记住，一定要是用YYY-MMM-DDD-Title.md(或者.markdown)形式命名，然后用cmd markdown这款编辑器打开该文件进行重编辑，对于YAML头信息中的内容改几个你觉得有必要改的就行了，类似于 :
+```
+---
+layout: post
+title: hello world
+tags: tag1 tag2
+---
+```
+> * 对于尾部信息就不要改了，类似于:
+```
+[jekyll-docs]: https://jekyllrb.com/docs/home
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-talk]: https://talk.jekyllrb.com/
+```
+> * 博客的内容只要把模板的内容换成自己的就行了
+> * 修改完后，你使用ruby命令行进入本地库，run ` jekyll serve` ，这时候我出了一个问题，` invalid byte sequence in Utf-8` 怎么办呢？不要慌，使用notepad++打开这个博客文件，在编码中，选择 ` 转为utf-8-BOM编码` ,然后再次run ` jekyll serve` 就大功告成了!
+> * 使用` git commit -a -m "first blog"` ,将修改的本地文件提交到暂存区并提交，然后` git push` 就行了
+> * [我的博客地址](https://taohonghk.github.io)
+
+
+---
 
 ## **搞一下Java**
-
-
-
-
+见我另一篇博客，Java
 
 [jekyll-docs]: https://jekyllrb.com/docs/home
 [jekyll-gh]:   https://github.com/jekyll/jekyll
