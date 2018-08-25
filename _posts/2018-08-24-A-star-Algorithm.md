@@ -3,7 +3,7 @@ layout: post
 title: Algorithm
 date: 2018-08-24 20:28:20 +0300
 description: my Algorithm . # Add post description (optional)
-img: post-2.jpg # Add image post (optional)
+img: post-5.jpg # Add image post (optional)
 tags: [Algorithm, Java]
 
 ---
