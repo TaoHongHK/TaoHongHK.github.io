@@ -319,15 +319,10 @@ public class A_Star {
         }
     }
 
-
     private boolean isCoordInClose(Coord coord){
-        return coord != null && isCoordInClose(coord.x,coord.y);
-    }
-
-    private boolean isCoordInClose(int x,int y){
         if(closeList.isEmpty()) return false;
         for(Node node: closeList){
-            if(node.coord.x == x && node.coord.y == y){
+            if(node.coord.equals(coord)){
                 return true;
             }
         }
@@ -349,9 +344,7 @@ public class A_Star {
     }
 
     private int calcH(Coord end,Coord coord){
-        return Math.abs(end.x - coord.x
-                + Math.abs(end.y -coord.y)
-        );
+        return (Math.abs(end.x - coord.x)+ Math.abs(end.y -coord.y))*10;
     }
 
     private boolean canAddNodeToOpen(MapInfo mapInfo,int x,int y){
@@ -364,13 +357,11 @@ public class A_Star {
 
     private void addNeighborNodeInOpen(MapInfo mapInfo,Node current
     ,int x,int y,int value){
+        Coord coord = new Coord(x,y);
         if(canAddNodeToOpen(mapInfo,x,y)){
             Node end = mapInfo.end;
-            Coord coord = new Coord(x,y);
-            // the next note's(child's) coord
             int G = current.G + value;
             Node child = findNodeInOpen(coord);
-            //judge if the next node(child) is in the openList
             if(child == null){
                 int H = calcH(end.coord,coord);
                 if(isEndNode(end.coord,coord)){
@@ -379,16 +370,13 @@ public class A_Star {
                     child.G = G;
                     child.H = H;
                 }
-                else {
-                    child = new Node(coord,current,G,H);
-                }
-                openList.add(child);
+                else child = new Node(coord,current,G,H);
             }
             else if(child.G>G){
                 child.G = G;
                 child.parent = current;
-                openList.add(child);
             }
+            openList.add(child);
         }
     }
 
@@ -415,33 +403,7 @@ public class A_Star {
             end = end.parent;
         }
     }
-}
-```
-
-## **text**
-public class Text{
-    public static void main(String[] args) {
-        int[][] maps = {
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-
-                {0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0},
-
-                {0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
-
-                {0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
-
-                {0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-
-                {0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0}
-        };
-        MapInfo mapinfo = new MapInfo(maps, maps[0].length, maps.length,
-                new Node(1, 5), new Node(10, 5));
-        new A_Star().start(mapinfo);
-        printMap(maps);
-    }
-
+    
     public static void printMap(int[][] maps){
         for(int i = 0;i<maps.length;i++){
             for(int j = 0;j<maps[i].length;j++){
@@ -449,6 +411,39 @@ public class Text{
             }
             System.out.println();
         }
+    }
+    
+    public static boolean inputRight(MapInfo mapinfo){
+        Coord end = mapinfo.end.coord;
+        Coord start = mapinfo.start
+        return !(mapinfo.maps[end.y][end.x]==BAR||mapinfo.maps[start.y][start.x]);
+    }
+}
+
+```
+
+## **text**
+public class Text{
+    public static void main(String[] args) {
+                int[][] maps = {
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1},
+                {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        };
+        A_Star a_star = new A_Star();
+        MapInfo mapinfo = new MapInfo(maps, maps[0].length, maps.length,
+                new Node(3, 4), new Node(12, 5));
+        if (a_star.inputRight(mapinfo)) {
+            a_star.start(mapinfo);
+            A_Star.printMap(maps);
+        } else System.err.println("Input Wrong");
+    }
     }
 }
 
