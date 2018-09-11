@@ -1,212 +1,212 @@
-﻿---
+---
 layout: post
 title: A* Algorithm
 date: 2018-08-24 20:28:20 +0300
 description: my Algorithm . # Add post description (optional)
-img: post-2.jpg # Add image post (optional)
+img: post-1.jpg # Add image post (optional)
 tags: [Algorithm, Java]
 
 ---
 
-# **A*算法**
+# **A*�㷨**
 
 
 ---
 
-## **简介**
+## **���**
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-88d440f686f78ef7.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/800">
 </center>
 
 
-一只寻路的猫
+һֻѰ·��è
 
-让我们开始想象我们有一个这样的游戏：一只猫想要找到一条通往一根骨头的路。
+�����ǿ�ʼ����������һ����������Ϸ��һֻè��Ҫ�ҵ�һ��ͨ��һ����ͷ��·��
 
-那么，让我们想象下面这张图片里的猫想要找到通往骨头的最短路径。
+��ô��������������������ͼƬ���è��Ҫ�ҵ�ͨ����ͷ�����·����
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-6d0b5383f850aa24.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-令人悲伤的是，猫咪不能直接从他目前的位置走到骨头所在的位置，因为有一面墙挡住了路，而他在游戏中也不是一个无实体的鬼魂！我们游戏里的这只猫也很懒，所以他一般来说想要找到一条最短的路径.那么现在我们怎么才能写出一个算法去找到猫咪应该走的最短路径呢？ A* 就是解救方法。
+���˱��˵��ǣ�è�䲻��ֱ�Ӵ���Ŀǰ��λ���ߵ���ͷ���ڵ�λ�ã���Ϊ��һ��ǽ��ס��·����������Ϸ��Ҳ����һ����ʵ��Ĺ��꣡������Ϸ�����ֻèҲ������������һ����˵��Ҫ�ҵ�һ����̵�·��.��ô����������ô����д��һ���㷨ȥ�ҵ�è��Ӧ���ߵ����·���أ� A* ���ǽ�ȷ�����
 
-将搜索区域简单化
+����������򵥻�
 
-在寻路过程中，我们要做的第一步就是讲搜索区域简化为一些我们能够很荣易管理的东西。具体怎么去做这个取决于你的游戏。例如：我们可以将搜索区域分隔成一个一个的像素，但是这个对于我们这种基于瓷砖（tile）的游戏来说，像素这个单位太小了。所以，我们将用瓷砖（正方形）作为基本单位在寻路算法中使用。其他形状的也可以（例如三角形或六边形），但是正方形是最符合我们需要的，而且也是最简单的。
-像这样分隔开来，我们的搜索区域就可以被简单的表示为一个二维数组。所以当我们的关卡有 25x25 的瓷砖时，我们的搜索区域就是一个有着625个正方形的数组。如果我们将我们的地图以像素分隔开来时，我们的搜索区域就将会是一个有着 6400,000 个正方形的数组（一个瓷砖有 32x32 个像素）！
+��Ѱ·�����У�����Ҫ���ĵ�һ�����ǽ����������ΪһЩ�����ܹ������׹����Ķ�����������ôȥ�����ȡ���������Ϸ�����磺���ǿ��Խ���������ָ���һ��һ�������أ�������������������ֻ��ڴ�ש��tile������Ϸ��˵�����������λ̫С�ˡ����ԣ����ǽ��ô�ש�������Σ���Ϊ������λ��Ѱ·�㷨��ʹ�á�������״��Ҳ���ԣ����������λ������Σ��������������������������Ҫ�ģ�����Ҳ����򵥵ġ�
+�������ָ����������ǵ���������Ϳ��Ա��򵥵ı�ʾΪһ����ά���顣���Ե����ǵĹؿ��� 25x25 �Ĵ�שʱ�����ǵ������������һ������625�������ε����顣������ǽ����ǵĵ�ͼ�����طָ�����ʱ�����ǵ���������ͽ�����һ������ 6400,000 �������ε����飨һ����ש�� 32x32 �����أ���
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-778f0baa19155925.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-开放表和闭合表
-现在我们已经建立一个简单的搜索区域，让我们来讨论 A* 算法 是怎么实现的。
-我们的猫咪除了懒惰，记性也不好，所以他将需要两个表：
-一个表用于记录所有正在被考虑、用于找到最短路径的方格（我们叫它开放表）
-一个表用于记录所有不需要被再次考虑的方格（我们叫它闭合表）
-刚开始时，猫咪将他目前的位置（我们将称呼这个开始的点为点“A”）加入闭合表中。然后，他将所有邻近他的、可以行走的方格加入开放表中。
-这儿有一个例子展示了如果猫咪站在一个开放位置，应该怎么做（绿色代表开放表）
+���ű��ͱպϱ�
+���������Ѿ�����һ���򵥵��������������������� A* �㷨 ����ôʵ�ֵġ�
+���ǵ�è��������裬����Ҳ���ã�����������Ҫ��������
+һ�������ڼ�¼�������ڱ����ǡ������ҵ����·���ķ������ǽ������ű���
+һ�������ڼ�¼���в���Ҫ���ٴο��ǵķ������ǽ����պϱ���
+�տ�ʼʱ��è�佫��Ŀǰ��λ�ã����ǽ��ƺ������ʼ�ĵ�Ϊ�㡰A��������պϱ��С�Ȼ�����������ڽ����ġ��������ߵķ�����뿪�ű��С�
+�����һ������չʾ�����è��վ��һ������λ�ã�Ӧ����ô������ɫ�������ű���
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-f78b4169a0b80fe6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-路径代价
-我们将给每一个方格一个分数：G + H
-G代表着从开始点“A”到目前所在方格的代价。所以，对于一个邻近开始点“A”的点来说，代价就是1, 但是当我们离开始点越远时，代价就会增加。
-H代表着从当前点到目的地点的预计代价（我们将把骨头所在的点称为点“B”）。这个代价通常是尝试性的计算得出的 – 因为我们不知道真正的代价是多少，这仅仅是一个估计。
-你可能会想，“移动代价”的含义是什么。其实在游戏中这个相当简单 – 仅仅只是方格的数量罢了。
-然而，记住在我们的游戏中，你可以赋予它不同的含义。例如：
-如果你允许对角线移动的话，你可能会将对角线移动的代价设置得略高一点。
-如果你有几种不同的地形，你可能会设置不同的移动代价在不同的地形上。
-这就是大致的想法 – 现在让我们深入来更具体的计算 G 和 H 吧。
+·������
+���ǽ���ÿһ������һ��������G + H
+G�����Ŵӿ�ʼ�㡰A����Ŀǰ���ڷ���Ĵ��ۡ����ԣ�����һ���ڽ���ʼ�㡰A���ĵ���˵�����۾���1, ���ǵ������뿪ʼ��ԽԶʱ�����۾ͻ����ӡ�
+H�����Ŵӵ�ǰ�㵽Ŀ�ĵص��Ԥ�ƴ��ۣ����ǽ��ѹ�ͷ���ڵĵ��Ϊ�㡰B�������������ͨ���ǳ����Եļ���ó��� �C ��Ϊ���ǲ�֪�������Ĵ����Ƕ��٣��������һ�����ơ�
+����ܻ��룬���ƶ����ۡ��ĺ�����ʲô����ʵ����Ϸ������൱�� �C ����ֻ�Ƿ�����������ˡ�
+Ȼ������ס�����ǵ���Ϸ�У�����Ը�������ͬ�ĺ��塣���磺
+����������Խ����ƶ��Ļ�������ܻὫ�Խ����ƶ��Ĵ������õ��Ը�һ�㡣
+������м��ֲ�ͬ�ĵ��Σ�����ܻ����ò�ͬ���ƶ������ڲ�ͬ�ĵ����ϡ�
+����Ǵ��µ��뷨 �C ����������������������ļ��� G �� H �ɡ�
 
-关于 G
-为了计算 G，我们需要将上一个 G （我们来的那个方格）再加上1。因此，每一个方格的 G 值将代表从 A 点沿路径到这个方格的总代价。
-例如，下面的图表展示了两条到不同骨头的路径，每一个方格的 G 值都已经标记上去了。
+���� G
+Ϊ�˼��� G��������Ҫ����һ�� G �����������Ǹ������ټ���1����ˣ�ÿһ������� G ֵ�������� A ����·�������������ܴ��ۡ�
+���磬�����ͼ��չʾ����������ͬ��ͷ��·����ÿһ������� G ֵ���Ѿ������ȥ�ˡ�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-5c620ec59ca2ffff.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-关于 H
-回忆一下：H 是从当前方格到目的地的预计花费。
-预计花费越接近实际代价，最终的路径就会越准确。如果预计得不够准确，那么生成的路径可能不是最短的（但是它可能会很接近）。这个问题太过于复杂以至于我们将不会在这篇教程中讨论它，但是我还是会在文章末尾给予你一个将它解释得十分详尽的链接。
-为了将它简单化，我们将会用到“曼哈端距离算法”（译注：Manhattan distance method），这个算法仅仅只是计算了当前点到 B 点的水平方向和竖直方向上的方格数，而没有将障碍物或不同地形考虑进来。
-例如，下面用图表展示了在不同起始点下，用“曼哈端距离算法”模拟的 H 值（显示在黑框中）
+���� H
+����һ�£�H �Ǵӵ�ǰ����Ŀ�ĵص�Ԥ�ƻ��ѡ�
+Ԥ�ƻ���Խ�ӽ�ʵ�ʴ��ۣ����յ�·���ͻ�Խ׼ȷ�����Ԥ�Ƶò���׼ȷ����ô���ɵ�·�����ܲ�����̵ģ����������ܻ�ܽӽ������������̫���ڸ������������ǽ���������ƪ�̳����������������һ��ǻ�������ĩβ������һ���������͵�ʮ���꾡�����ӡ�
+Ϊ�˽����򵥻������ǽ����õ��������˾����㷨������ע��Manhattan distance method��������㷨����ֻ�Ǽ����˵�ǰ�㵽 B ���ˮƽ�������ֱ�����ϵķ���������û�н��ϰ����ͬ���ο��ǽ�����
+���磬������ͼ��չʾ���ڲ�ͬ��ʼ���£��á������˾����㷨��ģ��� H ֵ����ʾ�ںڿ��У�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-0d82daa7ed0b4b47.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-A* 算法
-那么现在你知道了如何去计算每一个方格的分数（我们将把这个叫做 F，它等于 G + H）
-猫咪会重复一下步骤来找到最短路径：
-在开放表中拿到一个分数最低的方格，我们将这个方格叫做方格 S
-在开放表中移除方格 S，然后将 S 放入闭合表中
-对于在方格 S 的每一个相邻的方格 T
-A. 如果 T 在闭合表中：忽略它
-B. 如果 T 不在开放表中：将它加入开放表中，然后计算它的代价
-C. 如果 T 已经在开放表中：检查如果我们用当前生成的路径到达终点的话，F 值会不会更低。如果是的话，那么更新它的数值，然后也更新它的父节点
-如果你对它还不太了解的话，别担心 – 我们将通过一个简单的例子来一步一步的演示它是怎样工作的！ :)
-猫咪的路径
-让我们以一个懒猫如何找到骨头的作为例子。
-在下面的表格中，我已经根据如下的方式列出了 F = G + H 的值:
-F（每个方格的数值）： 最左上角
-G（从 A 到当前方格的代价）： 左下角
-H（从当前方格到 B 点的预估代价）： 右下角
-除此之外，箭头表示了到达该方格的移动方向。
-最后，每一步的红色方格代表闭合表，绿色方格代表开放表。
-好，让我们开始吧！
+A* �㷨
+��ô������֪�������ȥ����ÿһ������ķ��������ǽ���������� F�������� G + H��
+è����ظ�һ�²������ҵ����·����
+�ڿ��ű����õ�һ��������͵ķ������ǽ��������������� S
+�ڿ��ű����Ƴ����� S��Ȼ�� S ����պϱ���
+�����ڷ��� S ��ÿһ�����ڵķ��� T
+A. ��� T �ڱպϱ��У�������
+B. ��� T ���ڿ��ű��У��������뿪�ű��У�Ȼ��������Ĵ���
+C. ��� T �Ѿ��ڿ��ű��У������������õ�ǰ���ɵ�·�������յ�Ļ���F ֵ�᲻����͡�����ǵĻ�����ô����������ֵ��Ȼ��Ҳ�������ĸ��ڵ�
+������������̫�˽�Ļ������� �C ���ǽ�ͨ��һ���򵥵�������һ��һ������ʾ�������������ģ� :)
+è���·��
+��������һ����è����ҵ���ͷ����Ϊ���ӡ�
+������ı����У����Ѿ��������µķ�ʽ�г��� F = G + H ��ֵ:
+F��ÿ���������ֵ���� �����Ͻ�
+G���� A ����ǰ����Ĵ��ۣ��� ���½�
+H���ӵ�ǰ���� B ���Ԥ�����ۣ��� ���½�
+����֮�⣬��ͷ��ʾ�˵���÷�����ƶ�����
+���ÿһ���ĺ�ɫ��������պϱ�����ɫ����������ű���
+�ã������ǿ�ʼ�ɣ�
 Step 1
-在第一步，猫咪确定了在离他开始点（点 A）相邻的可行走的方格，计算它们的 F 值，然后将它们加入它的开放表中。
+�ڵ�һ����è��ȷ������������ʼ�㣨�� A�����ڵĿ����ߵķ��񣬼������ǵ� F ֵ��Ȼ�����Ǽ������Ŀ��ű��С�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-e2b45fffeafe57d8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-你会发现每个方格的 H 值都已经列出来了（其中两个是6，一个是4）。我建议你以 “曼哈瑞距离算法”来计算每一个方格的 H 值，以便于你理解。
-同样需要提醒的，F 值（在左上角）就仅仅是 G+H 的值。
+��ᷢ��ÿ������� H ֵ���Ѿ��г����ˣ�����������6��һ����4�����ҽ������� ������������㷨��������ÿһ������� H ֵ���Ա��������⡣
+ͬ����Ҫ���ѵģ�F ֵ�������Ͻǣ��ͽ����� G+H ��ֵ��
 Step 2
-在下一步，猫咪选择了 F 值最低的方格，将它加入闭合表中，然后检索它的邻近方格。
+����һ����è��ѡ���� F ֵ��͵ķ��񣬽�������պϱ��У�Ȼ����������ڽ�����
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-9dbd682fca87c00c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-在这里你能看到，代价最低的方格是 F 值为 5 的方格。它尝试将所有的相邻方格加入开放表中（然后计算它们的数值），要注意到它不能将猫咪所在的方格加入开放表（因为他已经在闭合表中了），那些障碍物方格也不能加入（因为它是不可行走的）。
-需要注意的是：对与两个新加入开放表的方格，它们的 G 值已经加了一，因为它们离初始点有两个方格的距离。你同样也需要用“曼哈瑞距离算法”来确定每个新方格的 H 值。
+���������ܿ�����������͵ķ����� F ֵΪ 5 �ķ��������Խ����е����ڷ�����뿪�ű��У�Ȼ��������ǵ���ֵ����Ҫע�⵽�����ܽ�è�����ڵķ�����뿪�ű�����Ϊ���Ѿ��ڱպϱ����ˣ�����Щ�ϰ��﷽��Ҳ���ܼ��루��Ϊ���ǲ������ߵģ���
+��Ҫע����ǣ����������¼��뿪�ű��ķ������ǵ� G ֵ�Ѿ�����һ����Ϊ�������ʼ������������ľ��롣��ͬ��Ҳ��Ҫ�á�����������㷨����ȷ��ÿ���·���� H ֵ��
 Step 3
-同样的，我们选择了有着最低 F 值的方块，然后继续迭代：
+ͬ���ģ�����ѡ����������� F ֵ�ķ��飬Ȼ�����������
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-7a5be4ef9bef56f0.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
 Step 4
-在这里我们有一个有趣的例子。在上一张图片中你可以看到，现在有 4 个方块有着相同的 F 值为 7 — 我们现在应该怎么做？
-这里我们有几种方式可以用，但是一个简单的（也是快速的）方式是继续跟着最近一个加入到开放表中的方格。所以我们继续跟着最近一个刚刚加入带开放表中的方格：
+������������һ����Ȥ�����ӡ�����һ��ͼƬ������Կ����������� 4 ������������ͬ�� F ֵΪ 7 �� ��������Ӧ����ô����
+���������м��ַ�ʽ�����ã�����һ���򵥵ģ�Ҳ�ǿ��ٵģ���ʽ�Ǽ����������һ�����뵽���ű��еķ����������Ǽ����������һ���ոռ�������ű��еķ���
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-01c73bab405785e4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-这一次有两个相邻的而且可以行走的方格，我们像以前那样计算它们的分数。
+��һ�����������ڵĶ��ҿ������ߵķ�����������ǰ�����������ǵķ�����
 Step 5
-像往常一样，我们选择了有着最低分的方格（7），而且为了保持一致我们这次选择了最邻近的一个方格。
+������һ��������ѡ����������ͷֵķ���7��������Ϊ�˱���һ���������ѡ�������ڽ���һ������
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-52db9e68d28bb63f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-这一次只有一种可能性，我们越来越接近了！
+��һ��ֻ��һ�ֿ����ԣ�����Խ��Խ�ӽ��ˣ�
 Step 6
-你现在越走越近了！我敢打赌，你会猜测下一步是这样子的：
+������Խ��Խ���ˣ��ҸҴ�ģ����²���һ���������ӵģ�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-80c0605ef6d37a9d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-我们几乎就要到了，但是这次，你可以看见，现在这里我们有两条最短的路径达到目的地，我们可以在这两者之间选择。
+���Ǽ�����Ҫ���ˣ�������Σ�����Կ�������������������������̵�·���ﵽĿ�ĵأ����ǿ�����������֮��ѡ��
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-13d93ccd69728a2b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
 
-在我们这个例子中，有两条最短路径：
+��������������У����������·����
 1-2-3-4-5-6
 1-2-3-4-5-7
-在真正的代码实现中，我们选择哪条路并不重要。
+�������Ĵ���ʵ���У�����ѡ������·������Ҫ��
 Step 7
-让我们再次迭代这些方格：
+�������ٴε�����Щ����
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-d645efe5da27aba5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-啊哈，骨头现在在开放表中！
+��������ͷ�����ڿ��ű��У�
 Step 8
-当我们的目标在开放表中时，算法会将它加入到闭合表中：
+�����ǵ�Ŀ���ڿ��ű���ʱ���㷨�Ὣ�����뵽�պϱ��У�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-3a95517b21d7dbb6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-然后，算法所有需要做的就是返回去，找到最终的路径。
+Ȼ���㷨������Ҫ���ľ��Ƿ���ȥ���ҵ����յ�·����
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-2ced77a8b199c504.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
-一个没有眼光的猫咪（A Non-Visionary Cat）
-在上面这个例子中，我们可以看到，当猫咪在寻找最短路径时，它通常会选择最优的方格（在它的未来是最短路径的上的方格） – 看起来它是一个有眼力的猫咪！（译注：指的应该是贪心的意思）
-但是，当我们的猫咪，没有那么聪明，而且总是选择开放表中 F 最低的方格加入它的闭合表会怎么样呢？
-下图展示了所有在寻找最短路径的过程中所需要的所有方格。你可以看到：猫咪尝试了更多方格，但是它仍然找到了最短路径（和之前展示的不是一样的，但是另一种相等）：
+һ��û���۹��è�䣨A Non-Visionary Cat��
+��������������У����ǿ��Կ�������è����Ѱ�����·��ʱ����ͨ����ѡ�����ŵķ���������δ�������·�����ϵķ��� �C ����������һ����������è�䣡����ע��ָ��Ӧ����̰�ĵ���˼��
+���ǣ������ǵ�è�䣬û����ô��������������ѡ�񿪷ű��� F ��͵ķ���������ıպϱ�����ô���أ�
+��ͼչʾ��������Ѱ�����·���Ĺ���������Ҫ�����з�������Կ�����è�䳢���˸��෽�񣬵�������Ȼ�ҵ������·������֮ǰչʾ�Ĳ���һ���ģ�������һ����ȣ���
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-32112e106a0a67e9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
 
-在图中，红色方格并不代表最短路径，它们仅仅只是表示它们在有些时候被选为了 “S” 方格。
-我建议你看看上面的表格，然后尝试自己走走它。这一次，无论何时你看到了一个分数平等的方格，你就去选择它。你会发现你最后仍然会以最短路径结尾。
-所以，你会发现，跟着 “错误” 的方块走也没有问题，你仍然会以最短路径结尾，即使它可能会让你多迭代几次。
-所以在我们的实现中，我们将以以下算法将方格加入到开放表中：
-相邻方格将会以这样的顺序返回：上/左/下/右
-一个方格将会被添加入开放表中，在所有有着相同代价的方格之后（所以第一个加入开放表中的方格将会是第一个被猫咪选择的方格）
-下面是一个用图表展示的回溯过程：
+��ͼ�У���ɫ���񲢲��������·�������ǽ���ֻ�Ǳ�ʾ��������Щʱ��ѡΪ�� ��S�� ����
+�ҽ����㿴������ı���Ȼ�����Լ�����������һ�Σ����ۺ�ʱ�㿴����һ������ƽ�ȵķ������ȥѡ��������ᷢ���������Ȼ�������·����β��
+���ԣ���ᷢ�֣����� ������ �ķ�����Ҳû�����⣬����Ȼ�������·����β����ʹ�����ܻ������������Ρ�
+���������ǵ�ʵ���У����ǽ��������㷨��������뵽���ű��У�
+���ڷ��񽫻���������˳�򷵻أ���/��/��/��
+һ�����񽫻ᱻ�����뿪�ű��У�������������ͬ���۵ķ���֮�����Ե�һ�����뿪�ű��еķ��񽫻��ǵ�һ����è��ѡ��ķ���
+������һ����ͼ��չʾ�Ļ��ݹ��̣�
 
 <center class = "A*">
 <img src="https://upload-images.jianshu.io/upload_images/13484241-29cbed722fe8e418.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 </center>
 
 
-## **基本的类**
+## **��������**
 
-1. Coord基本类
+1. Coord������
 
 ```
 public class Coord{
@@ -230,9 +230,9 @@ public class Coord{
 }
 ```
 
-按照二维数组的特点，坐标原点在左上角，所以y是高，x是宽，y向下递增，x向右递增，我们将x和y封装成一个类，这里重写了equals方法，用来比较两个坐标对象是否是相同的
+���ն�ά������ص㣬����ԭ�������Ͻǣ�����y�Ǹߣ�x�ǿ���y���µ�����x���ҵ��������ǽ�x��y��װ��һ���࣬������д��equals�����������Ƚ�������������Ƿ�����ͬ��
 
-2.Node基本类
+2.Node������
 
 ```
 public class Node implements Comparabel<Node>{
@@ -264,9 +264,9 @@ public class Node implements Comparabel<Node>{
 }
 ```
 
-用Node类继承Comparabel类，从而使用优先队列的时候可以进行我们所期望的排序
+��Node��̳�Comparabel�࣬�Ӷ�ʹ�����ȶ��е�ʱ����Խ�������������������
 
-3.MapInfo基本类
+3.MapInfo������
 
 ```
 public class MapInfo {
@@ -287,7 +287,7 @@ public class MapInfo {
 }
 ```
 
-## **A_Star类**
+## **A_Star��**
 
 ```
 public class A_Star {
