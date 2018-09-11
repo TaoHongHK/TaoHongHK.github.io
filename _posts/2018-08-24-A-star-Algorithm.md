@@ -423,6 +423,9 @@ public class A_Star {
 ```
 
 ## **text**
+
+```
+
 public class Text{
     public static void main(String[] args) {
                 int[][] maps = {
@@ -447,5 +450,6 @@ public class Text{
     }
 }
 
+```
 
 
